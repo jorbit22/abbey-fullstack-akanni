@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"   // keeps generated client inside src
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+// User model - core for auth + accounts
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  name          String?
+  bio           String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  refreshTokens RefreshToken[]
+
+  // Relationships (follows)
+  following     Follow[] @relation("Following")
+  followers     Follow[] @relation("Followers")
+
+  @@map("users")
+}
+
+// Refresh tokens for secure session handling
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique   // we'll hash this in code
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// Follow relationship (many-to-many self-relation on User)
+model Follow {
+  followerId    String
+  followingId   String
+  createdAt     DateTime @default(now())
+
+  follower      User     @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following     User     @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])   // composite primary key → prevents duplicates
+  @@map("follows")
+}

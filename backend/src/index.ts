@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 
 import { prisma } from "./lib/prisma.js"; // Prisma singleton
 import authRouter from "./modules/auth/auth.routes.js";
+import userRouter from "./modules/user/user.routes.js";
+import followRouter from "./modules/follow/follow.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 dotenv.config();
@@ -46,6 +48,8 @@ app.get("/api/v1/health", async (req, res) => {
 
 // Mount auth routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1", followRouter);
 
 // 404 handler
 app.use((req, res) => {

@@ -1,0 +1,182 @@
+// src/components/AuthPage/AuthPage.scss
+
+// ── Colors (Bone 6) ──
+$primary: #004aad; // Deep navy – trust & King button
+$primary-dark: #00307f; // Hover/active
+$secondary: #1890ff; // Links & accents
+$text-primary: #1a1a1a;
+$text-secondary: #555555;
+$border: #e0e0e0;
+$bg-light: #f8f9fa;
+
+// ── Elevation & Depth (Bone 5) ──
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+$shadow-glow: 0 8px 24px rgba(0, 74, 173, 0.2); // blue hint
+
+$radius-sm: 8px;
+$radius-md: 12px;
+
+// ── Main Layout ──
+.auth-page {
+  background: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.7s ease-out; // Bone 7 gentle entrance
+}
+
+.auth-container {
+  background: $bg-light;
+  border-radius: $radius-md;
+  box-shadow: $shadow-md;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid $border;
+}
+
+// ── Header (Level 1 Hook) ──
+.auth-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .auth-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, $primary 0%, $secondary 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 8px rgba($primary, 0.15);
+    animation: glowPulse 3s ease-in-out infinite alternate;
+  }
+
+  .auth-subtitle {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: $text-secondary;
+  }
+}
+
+// ── Form Fields ──
+.auth-form {
+  .ant-form-item {
+    margin-bottom: 1.5rem;
+  }
+
+  .ant-form-item-label > label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+    color: $text-primary;
+  }
+
+  .ant-input,
+  .ant-input-password {
+    height: 44px;
+    font-size: 1rem;
+    border-radius: $radius-sm;
+    border: 1px solid $border;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+    padding: 0 14px;
+
+    &:focus,
+    &:focus-within {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.15);
+      transform: scale(1.01); // subtle grow
+    }
+  }
+
+  // Centered password eye icon (Bone 5)
+  .ant-input-password {
+    .ant-input-suffix {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .anticon-eye,
+    .anticon-eye-invisible {
+      font-size: 1.05rem;
+      color: $text-secondary;
+      margin-right: 12px;
+    }
+  }
+
+  // King button (Bone 6 + 7)
+  .auth-submit-btn {
+    height: 48px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: $radius-sm;
+    background: $primary;
+    border-color: $primary;
+    color: white;
+    box-shadow: $shadow-sm;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background: $primary-dark;
+      border-color: $primary-dark;
+      box-shadow: $shadow-glow;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+// ── Footer ──
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: $text-secondary;
+
+  a {
+    font-weight: 500;
+    cursor: pointer;
+    color: $secondary;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+// ── Animations (Bone 7) ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowPulse {
+  from {
+    text-shadow: 0 2px 8px rgba($primary, 0.15);
+  }
+  to {
+    text-shadow: 0 6px 20px rgba($primary, 0.35);
+  }
+}

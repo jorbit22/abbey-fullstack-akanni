@@ -45,26 +45,6 @@ export class UserService {
     return updatedUser;
   }
 
-  static async getOwnProfile(userId: string) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        bio: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
-
-    return user;
-  }
-
   static async getPublicProfile(userId: string) {
     const [user, followerCount, followingCount] = await Promise.all([
       prisma.user.findUnique({
@@ -89,6 +69,93 @@ export class UserService {
       throw new AppError("User not found", 404);
     }
 
+    return {
+      ...user,
+      followerCount,
+      followingCount,
+    };
+  }
+
+  static async getUsers(params: {
+    search?: string;
+    page: number;
+    limit: number;
+  }) {
+    const { search = "", page = 1, limit = 10 } = params;
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { bio: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    const users = await prisma.user.findMany({
+      where,
+      skip,
+      take: limit,
+      select: {
+        id: true,
+        name: true,
+        bio: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const total = await prisma.user.count({ where });
+
+    // Calculate follower/following counts live
+    const usersWithCounts = await Promise.all(
+      users.map(async (user) => {
+        const followerCount = await prisma.follow.count({
+          where: { followingId: user.id },
+        });
+        const followingCount = await prisma.follow.count({
+          where: { followerId: user.id },
+        });
+
+        return {
+          ...user,
+          followerCount,
+          followingCount,
+        };
+      }),
+    );
+
+    return { users: usersWithCounts, total };
+  }
+
+  static async getOwnProfile(userId: string) {
+    // Fetch basic user data
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        bio: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    // Compute real follower and following counts (business logic → belongs here)
+    const followerCount = await prisma.follow.count({
+      where: { followingId: userId },
+    });
+
+    const followingCount = await prisma.follow.count({
+      where: { followerId: userId },
+    });
+
+    // Return combined object
     return {
       ...user,
       followerCount,

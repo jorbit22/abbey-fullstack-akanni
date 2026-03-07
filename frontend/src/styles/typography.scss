@@ -1,0 +1,24 @@
+// src/styles/typography.scss
+$font-family-base:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Font sizes (rem-based)
+$font-size-xxs: 0.75rem; // 12px – tiny footer/legal
+$font-size-xs: 0.875rem; // 14px – small text
+$font-size-sm: 1rem; // 16px – body text
+$font-size-md: 1.25rem; // 20px – subtitles/cards
+$font-size-lg: 1.75rem; // 28px – section titles
+$font-size-xl: 2.5rem; // 40px – main greeting
+$font-size-xxl: 3.5rem; // 56px – hero (rare)
+
+// Line heights
+$line-height-base: 1.5; // Comfortable reading
+$line-height-heading: 1.2; // Tight & authoritative for titles
+
+// Letter spacing
+$letter-spacing-heading: -0.02em; // Subtle premium compression

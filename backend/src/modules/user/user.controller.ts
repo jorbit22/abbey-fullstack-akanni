@@ -7,6 +7,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { UserService } from "./user.service.js";
 import { AppError } from "../../middlewares/error.middleware.js";
+import { prisma } from "../../lib/prisma.js";
 
 export const updateOwnProfile = async (
   req: Request,
@@ -33,6 +34,8 @@ export const getOwnProfile = async (
 ) => {
   try {
     const userId = req.user!.id;
+
+    // Delegate to service — no DB calls here
     const profile = await UserService.getOwnProfile(userId);
 
     res.json({
@@ -62,6 +65,35 @@ export const getPublicProfile = async (
     res.json({
       message: "Public profile retrieved",
       user: profile,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { search = "", page = "1", limit = "10" } = req.query;
+
+    const pageNum = parseInt(page as string, 10);
+    const limitNum = parseInt(limit as string, 10);
+
+    const data = await UserService.getUsers({
+      search: search as string,
+      page: pageNum,
+      limit: limitNum,
+    });
+
+    res.json({
+      message: "Users retrieved",
+      users: data.users,
+      total: data.total,
+      page: pageNum,
+      limit: limitNum,
     });
   } catch (err) {
     next(err);

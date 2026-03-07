@@ -1,0 +1,25 @@
+// src/styles/colors.scss (create this file if not already)
+
+// Primary brand – trust & authority
+$color-primary: #003087; // Deep navy blue – King buttons, links
+$color-primary-dark: #001f5b; // Hover/active
+$color-primary-light: #e6f0ff; // Subtle background accent
+
+// Success / positive
+$color-success: #52c41a; // Ant Design green – future success states
+
+// Error / warning
+$color-error: #f5222d; // Red – validation errors
+$color-warning: #faad14; // Orange – warnings
+
+// Neutral / text
+$color-text-primary: #000000; // Headings, strong text
+$color-text-secondary: #595959; // Subtitles, labels, stats
+$color-text-tertiary: #8c8c8c; // Small text, placeholders
+$color-bg: #ffffff; // Main background
+$color-bg-light: #f8f9fa; // Cards / elevated surfaces
+$color-border: #e0e0e0; // Borders, dividers
+
+// Interactive
+$color-link: $color-primary;
+$color-link-hover: $color-primary-dark;

@@ -1,0 +1,98 @@
+// src/components/PublicProfilePage/PublicProfilePage.scss
+
+$primary: #004aad;
+$primary-dark: #00307f;
+$text-primary: #1a1a1a;
+$text-secondary: #555;
+$border: #e0e0e0;
+$bg-light: #f8f9fa;
+$shadow-md: 0 3px 12px rgba(0, 0, 0, 0.08);
+$radius-md: 12px;
+
+.public-profile-page {
+  background: $bg-light;
+  min-height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.public-profile-card {
+  background: white;
+  border-radius: $radius-md;
+  box-shadow: $shadow-md;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid $border;
+}
+
+.public-profile-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .public-profile-avatar-default {
+    background: $primary;
+    margin-bottom: 1.25rem;
+  }
+
+  .public-profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 1rem;
+  }
+
+  .public-profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+
+    .ant-statistic-title {
+      font-size: 0.85rem;
+      color: $text-secondary;
+    }
+    .ant-statistic-content {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: $primary;
+    }
+  }
+}
+
+.public-profile-bio {
+  margin-bottom: 2rem;
+
+  .bio-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $text-primary;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $text-secondary;
+  }
+}
+
+.public-profile-actions {
+  text-align: center;
+
+  .follow-btn {
+    height: 44px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: $primary;
+    border-color: $primary;
+    color: white;
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba($primary, 0.2);
+    }
+  }
+}

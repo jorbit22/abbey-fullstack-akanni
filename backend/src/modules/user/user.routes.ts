@@ -10,6 +10,7 @@ import {
   updateOwnProfile,
   getOwnProfile,
   getPublicProfile,
+  getUsers,
 } from "./user.controller.js";
 import { updateProfileSchema } from "./user.dto.js";
 import { authGuard } from "../auth/auth.guard.js"; // adjust path if needed
@@ -23,5 +24,7 @@ router.patch("/me", authGuard, validate(updateProfileSchema), updateOwnProfile);
 router.get("/me", authGuard, getOwnProfile);
 
 router.get("/:id", getPublicProfile);
+
+router.get("/", getUsers);
 
 export default router;

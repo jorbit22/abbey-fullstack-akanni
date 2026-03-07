@@ -1,0 +1,153 @@
+// src/components/DiscoveryPage/DiscoveryPage.scss
+
+// ── Colors (Bone 6) ──
+$primary: #004aad;
+$primary-dark: #00307f;
+$secondary: #1890ff;
+$text-primary: #1a1a1a;
+$text-secondary: #555555;
+$border: #e0e0e0;
+$bg-light: #f8f9fa;
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+$shadow-glow: 0 8px 24px rgba(0, 74, 173, 0.25);
+
+// ── Layout ──
+.discovery-page {
+  background: $bg-light;
+  min-height: 100vh;
+  padding: 1.5rem 1rem;
+  animation: fadeInUp 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.discovery-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .discovery-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 1.25rem;
+  }
+
+  .discovery-search {
+    max-width: 500px;
+    margin: 0 auto;
+
+    .ant-input-group-addon .ant-btn {
+      background: $primary;
+      border-color: $primary;
+      color: white;
+    }
+
+    .ant-input-affix-wrapper-focused {
+      border-color: $primary;
+      box-shadow: 0 0 0 2px rgba($primary, 0.2);
+    }
+  }
+}
+
+.discovery-grid {
+  margin-bottom: 2rem;
+}
+
+.user-card {
+  border-radius: 10px;
+  box-shadow: $shadow-sm;
+  transition: all 0.25s ease;
+  height: 100%;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-glow;
+  }
+
+  .user-card-content {
+    text-align: center;
+    padding: 1.25rem 1rem;
+  }
+
+  .user-avatar-default {
+    background: $primary;
+    margin-bottom: 1rem;
+  }
+
+  .user-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: $text-primary;
+  }
+
+  .user-bio {
+    font-size: 0.95rem;
+    color: $text-secondary;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .user-stats {
+    font-size: 0.9rem;
+    color: $text-secondary;
+    margin-bottom: 1rem;
+
+    strong {
+      color: $primary;
+    }
+  }
+
+  .follow-btn {
+    height: 40px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: $primary;
+    border-color: $primary;
+    color: white;
+    transition: all 0.25s ease;
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary, 0.25);
+    }
+  }
+}
+
+.discovery-pagination {
+  text-align: center;
+  margin-top: 1.5rem;
+
+  .ant-pagination-item-active {
+    background: $primary;
+    border-color: $primary;
+
+    a {
+      color: white;
+    }
+  }
+}
+.empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: $text-secondary;
+
+  h3 {
+    color: $text-primary;
+    margin-bottom: 1rem;
+  }
+}
+
+// ── Bone 7 Animations ──
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

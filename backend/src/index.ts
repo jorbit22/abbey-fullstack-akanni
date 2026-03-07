@@ -41,7 +41,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// Health check endpoint
 app.get("/api/v1/health", async (req, res) => {
   try {
     await prisma.$connect();
@@ -60,18 +59,15 @@ app.get("/api/v1/health", async (req, res) => {
   }
 });
 
-// API Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1", followRouter);
 
-// Static file serving
 const frontendPath = path.join(__dirname, "../../frontend/dist");
 app.use(express.static(frontendPath));
 
-// Catch-all route for React SPA
-// Using "(.*)" instead of "*" for Express 5 compatibility
-app.get("(.*)", (req, res) => {
+///*path to satisfy Express 5's requirement for named parameters
+app.get("/*path", (req, res) => {
   if (req.path.startsWith("/api/v1")) {
     return res.status(404).json({
       message: "API route not found",

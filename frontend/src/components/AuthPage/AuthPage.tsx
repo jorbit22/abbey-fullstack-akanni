@@ -1,6 +1,7 @@
 // src/components/AuthPage/AuthPage.tsx
 import React, { useState } from "react";
 import { Form, Input, Button, Typography, notification } from "antd";
+import { useNavigate } from "react-router-dom";
 import { handleLogin, handleRegister } from "../../services/authActions";
 import "./AuthPage.scss";
 
@@ -10,13 +11,14 @@ const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
     setLoading(true);
 
     try {
       if (isLogin) {
-        await handleLogin(values);
+        await handleLogin(values, navigate);
       } else {
         const email = await handleRegister(values);
         // Switch to login + pre-fill email

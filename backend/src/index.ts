@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import compression from "compression";
 import { prisma } from "./lib/prisma.js";
 import authRouter from "./modules/auth/auth.routes.js";
 import userRouter from "./modules/user/user.routes.js";
@@ -39,6 +39,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(compression());
 app.use(cookieParser());
 
 app.get("/api/v1/health", async (req, res) => {

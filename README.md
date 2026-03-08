@@ -25,6 +25,14 @@ A professional networking platform built as part of the Abbey Mortgage Bank full
 - Axios (API client)
 - React Router (navigation)
 
+- ### Mobile (iOS & Android)
+- React Native + Expo (SDK 54)
+- Expo Router (file-based navigation)
+- React Native core components
+- Axios (API client)
+- AsyncStorage (token persistence)
+- Expo Vector Icons
+
 ## How to Run
 
 ### Backend
@@ -67,4 +75,5 @@ abbey-fullstack-akanni/
 |_
 |
 └── README.md
+
 

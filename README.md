@@ -42,6 +42,15 @@ npm install
 npm start
 Runs on http://localhost:3000
 
+## Mobile App (Expo)
+cd mobile
+npm install
+npx expo start --clear
+
+Press a → open in Android emulator/device
+Press i → open in iOS simulator
+Or scan the QR code with Expo Go app on your phone (recommended)
+
 
 abbey-fullstack-akanni/
 ├── backend/          # Node.js + Express + Prisma
@@ -50,4 +59,12 @@ abbey-fullstack-akanni/
 ├── frontend/         # React + Ant Design + SCSS
 │   ├── src/
 │   └── package.json
+├── mobile/                     # React Native + Expo mobile app
+│   ├── app/                    # Expo Router routes
+│   ├── src/                    # services, components, etc.
+│   ├── app.json
+│   └── package.json
+|_
+|
 └── README.md
+

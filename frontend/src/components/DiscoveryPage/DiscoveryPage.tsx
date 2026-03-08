@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Spin,
+  notification,
 } from "antd";
 import {
   fetchDiscoveryUsers,
@@ -46,20 +47,39 @@ const DiscoveryPage: React.FC = () => {
     loadUsers();
   }, [searchTerm, currentPage]);
 
-  // Handler: coordinates UI + calls action
-  const handleToggleFollow = async (userId: string, isFollowing: boolean) => {
-    try {
-      const newStatus = await toggleFollowUser(userId, isFollowing, () => {
-        // Optional: refresh entire list after follow/unfollow
-        // setCurrentPage(currentPage); // trigger re-fetch
-      });
+  // Handler: Optimistic + confirmed update
+  const handleToggleFollow = async (
+    userId: string,
+    currentlyFollowing: boolean,
+  ) => {
+    // 1. Optimistic UI update (instant feedback)
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId ? { ...u, isFollowing: !currentlyFollowing } : u,
+      ),
+    );
 
-      // Immediate UI update for this user
+    try {
+      // 2. Call server
+      const newStatus = await toggleFollowUser(userId, currentlyFollowing);
+
+      // 3. Confirm with real server data
       setUsers((prev) =>
         prev.map((u) => (u.id === userId ? { ...u, ...newStatus } : u)),
       );
-    } catch {
-      // Error already shown by action
+    } catch (err) {
+      // 4. Rollback on error
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === userId ? { ...u, isFollowing: currentlyFollowing } : u,
+        ),
+      );
+
+      // Error already shown in action, but we can add more if needed
+      notification.error({
+        message: "Failed to update follow status",
+        description: "Please try again",
+      });
     }
   };
 

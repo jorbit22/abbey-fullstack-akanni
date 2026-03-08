@@ -48,16 +48,22 @@ const ProfilePage: React.FC = () => {
     loadProfile();
   }, [form]);
 
-  // Handler: coordinates UI + calls action
+  // Handler: called directly from button
   const handleSave = async () => {
     setLoading(true);
     try {
-      const values = await form.validateFields(); // ensure validation
+      // Manually validate and get values
+      await form.validateFields();
+      const values = form.getFieldsValue();
       const updated = await saveProfileChanges(values);
       setUserData(updated);
+      form.setFieldsValue({
+        name: updated.name,
+        bio: updated.bio || "",
+      });
       setIsEditMode(false);
     } catch (err) {
-      // Error already shown by action
+      // Validation or server error — AntD shows field errors, action shows toast
     } finally {
       setLoading(false);
     }
@@ -92,7 +98,6 @@ const ProfilePage: React.FC = () => {
         <Form
           form={form}
           layout="vertical"
-          onFinish={handleSave} // now triggers handler
           disabled={!isEditMode}
           className={`profile-form ${isEditMode ? "edit-mode" : ""}`}
         >
@@ -110,7 +115,7 @@ const ProfilePage: React.FC = () => {
             <>
               <Button
                 type="primary"
-                htmlType="submit"
+                onClick={handleSave} // ← Manual call (not submit)
                 loading={loading}
                 className="save-btn"
               >

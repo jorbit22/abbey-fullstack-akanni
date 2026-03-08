@@ -1,18 +1,16 @@
 // src/services/api.ts
 import axios from "axios";
 
-const API_BASE_URL = "https://abbeyfullstack.onrender.com/api/v1";
+const API_BASE_URL = "http://localhost:4000/api/v1";
 
-// Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // Important: sends cookies (refreshToken)
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Add access token to every request (if logged in)
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -21,7 +19,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle token refresh on 401 (optional advanced step)
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -39,9 +36,9 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh failed → logout
         localStorage.removeItem("accessToken");
-        window.location.href = "/auth";
+        // ✅ Dispatch custom event instead of window.location.href
+        window.dispatchEvent(new Event("auth:logout"));
       }
     }
     return Promise.reject(error);

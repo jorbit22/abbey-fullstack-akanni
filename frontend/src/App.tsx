@@ -1,13 +1,20 @@
 // src/App.tsx
-import React, { useState } from "react";
-import { Routes, Route, Link, useLocation, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { Layout, Button, Drawer, notification } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import AuthPage from "./components/AuthPage/AuthPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import DiscoveryPage from "./components/DiscoveryPage/DiscoveryPage";
 import PublicProfilePage from "./components/PublicProfilePage/PublicProfilePage";
-import HomePage from "./components/HomePage/HomePage"; // ← NEW: import HomePage
+import HomePage from "./components/HomePage/HomePage";
 import { logout } from "./services/authService";
 import "./App.scss";
 
@@ -15,9 +22,21 @@ const { Content } = Layout;
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isLoggedIn = !!localStorage.getItem("accessToken");
+
+  // Listen for auth:logout event fired by api.ts interceptor
+  useEffect(() => {
+    const handleAuthLogout = () => {
+      localStorage.removeItem("accessToken");
+      navigate("/auth", { replace: true });
+    };
+
+    window.addEventListener("auth:logout", handleAuthLogout);
+    return () => window.removeEventListener("auth:logout", handleAuthLogout);
+  }, [navigate]);
 
   const navLinks = [
     { path: "/", label: isLoggedIn ? "Home" : "Sign In" },
@@ -39,14 +58,14 @@ function App() {
         placement: "topRight",
       });
       setMobileMenuOpen(false);
-      window.location.href = "/auth";
+      navigate("/auth", { replace: true }); //  replaced window.location.href
     } catch (err) {
       notification.error({
         message: "Logout failed",
         description: "Something went wrong, but you're signed out locally.",
       });
       localStorage.removeItem("accessToken");
-      window.location.href = "/auth";
+      navigate("/auth", { replace: true }); // replaced window.location.href
     }
   };
 
@@ -54,15 +73,12 @@ function App() {
 
   return (
     <Layout className="app-layout">
-      {/* Premium Fixed Nav */}
       <nav className="premium-nav">
         <div className="nav-container">
-          {/* Logo – always links to home */}
           <Link to="/" className="nav-logo">
             Abbey Connect
           </Link>
 
-          {/* Desktop Links */}
           <div className="nav-links desktop">
             {filteredLinks.map((link) => (
               <Link
@@ -86,7 +102,6 @@ function App() {
             )}
           </div>
 
-          {/* Mobile Hamburger */}
           <Button
             type="text"
             icon={
@@ -98,7 +113,6 @@ function App() {
         </div>
       </nav>
 
-      {/* Mobile Drawer */}
       <Drawer
         title={<span className="drawer-title">Abbey Connect</span>}
         placement="right"
@@ -131,26 +145,18 @@ function App() {
         </div>
       </Drawer>
 
-      {/* Main Content */}
       <Content className="main-content">
         <Routes>
-          {/* Root "/" redirects intelligently based on login status */}
           <Route
             path="/"
             element={
               isLoggedIn ? <HomePage /> : <Navigate to="/auth" replace />
             }
           />
-
-          {/* Auth page (login/register) */}
           <Route path="/auth" element={<AuthPage />} />
-
-          {/* Protected routes */}
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/discovery" element={<DiscoveryPage />} />
           <Route path="/users/:id" element={<PublicProfilePage />} />
-
-          {/* Fallback – 404 or redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Content>

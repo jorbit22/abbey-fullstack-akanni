@@ -1,4 +1,5 @@
 // src/App.tsx
+
 import React, { useState, useEffect } from "react";
 import {
   Routes,
@@ -27,7 +28,7 @@ function App() {
 
   const isLoggedIn = !!localStorage.getItem("accessToken");
 
-  // Listen for auth:logout event fired by api.ts interceptor
+  // Listen for auth:logout event (from api interceptor)
   useEffect(() => {
     const handleAuthLogout = () => {
       localStorage.removeItem("accessToken");
@@ -58,14 +59,14 @@ function App() {
         placement: "topRight",
       });
       setMobileMenuOpen(false);
-      navigate("/auth", { replace: true }); //  replaced window.location.href
+      navigate("/auth", { replace: true });
     } catch (err) {
       notification.error({
         message: "Logout failed",
-        description: "Something went wrong, but you're signed out locally.",
+        description: "Signed out locally anyway.",
       });
       localStorage.removeItem("accessToken");
-      navigate("/auth", { replace: true }); // replaced window.location.href
+      navigate("/auth", { replace: true });
     }
   };
 
@@ -73,12 +74,15 @@ function App() {
 
   return (
     <Layout className="app-layout">
+      {/* Premium Header / Nav */}
       <nav className="premium-nav">
         <div className="nav-container">
+          {/* Logo */}
           <Link to="/" className="nav-logo">
             Abbey Connect
           </Link>
 
+          {/* Desktop Nav Links + Logout */}
           <div className="nav-links desktop">
             {filteredLinks.map((link) => (
               <Link
@@ -102,6 +106,7 @@ function App() {
             )}
           </div>
 
+          {/* Hamburger Button – ALWAYS visible on mobile */}
           <Button
             type="text"
             icon={
@@ -113,6 +118,7 @@ function App() {
         </div>
       </nav>
 
+      {/* Mobile Drawer Menu */}
       <Drawer
         title={<span className="drawer-title">Abbey Connect</span>}
         placement="right"
@@ -145,6 +151,7 @@ function App() {
         </div>
       </Drawer>
 
+      {/* Main Content */}
       <Content className="main-content">
         <Routes>
           <Route
